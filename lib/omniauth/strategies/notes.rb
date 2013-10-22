@@ -6,7 +6,7 @@ module OmniAuth
       option :name, :notes
 
       option :client_options, {
-        :site => "http://notes18.com",
+        :site => "http://u.notes18.com",
         :authorize_url => "/oauth/authorize"
       }
 
