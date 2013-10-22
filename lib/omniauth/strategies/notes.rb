@@ -2,11 +2,16 @@ require 'omniauth'
 
 module OmniAuth
   module Strategies
-    class Notes
-      include OmniAuth::Strategy
+    class Notes < OmniAuth::Strategies::OAuth2
 
-      option :fields, [:email]
-      option :uid_field, :email
+      option :name, :notes
+      option :fields, [:email, :id]
+      option :uid_field, :id
+
+      option :client_options, {
+        :site => "http://notes18.com",
+        :authorize_url => "/oauth/authorize"
+      }
 
       uid do
         request.params[options.uid_field.to_s]
@@ -17,14 +22,6 @@ module OmniAuth
           hash[field] = request.params[field]
           hash
         end
-      end
-
-      def request_phase
-        redirect client.auth_code.authorize_url({:redirect_uri => callback_url}.merge(options.authorize_params))
-      rescue ::Timeout::Error => e
-        fail!(:timeout, e)
-      rescue ::Net::HTTPFatalError, ::OpenSSL::SSL::SSLError => e
-        fail!(:service_unavailable, e)
       end
     end
   end
