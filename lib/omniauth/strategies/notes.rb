@@ -25,4 +25,4 @@ module OmniAuth
       end
     end
   end
-END
+end
